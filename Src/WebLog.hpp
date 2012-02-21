@@ -29,12 +29,78 @@
 #define __WEB_LOG_H__
 
 #include "LogBase.hpp"
+#include <fstream>
+#include <string>
 
 namespace rhythm
 {
 	class WebLog : public LogBase
 	{
+	public:
+		WebLog() : LogBase()
+		{
+			file.open(  "./Log/RhythmWebLog.html", std::fstream::out | std::fstream::in );
+			file.seekp( 0, std::ios::end );
+			if( !file.tellp() )
+				file << prepare();
+		}
 
+		~WebLog()
+		{
+		}
+
+		void preCond()
+		{
+			LogBase::operator<<( "<div class=\"entry\">\n");
+		}
+
+		//Override inorder to end entry.
+		//This means every web log entry must be ended with the correct manip
+ 		LogBase& operator<< ( const Log::Manip m )
+		{ 
+			write( static_cast<char>(m) );
+			LogBase::operator<<( "</div>\n" );
+			file.flush();
+			return *this; 
+		}
+
+		//Override functor/lambda in order to know what warnign is being printed..
+		LogBase& operator<< ( Log::Level &l )
+		{
+			std::string lstr = l();
+			std::string bhtml = "", ehtml = "\n";
+			if( lstr == "[ WARNING ] " )
+			{
+				bhtml = "<h1 class=\"warn\">";
+				ehtml = "</h1>\n";
+			}
+			else if( lstr == "[ ERROR ] " )
+			{
+				bhtml = "<h1 class=\"error\">";
+				ehtml = "</h1>\n";
+			}
+
+			return LogBase::operator<<( bhtml + l() + ehtml );
+		}
+
+	private: 
+		const char* prepare()
+		{
+			return"<html>\n"
+					"<head>\n"
+					"<title>Rhythm Log</title>\n"
+					"<link href=\"http://fonts.googleapis.com/css?family=Droid+Sans+Mono&amp;v1\" rel=\"stylesheet\" type=\"text/css\">\n"
+					"<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"./css/style.css\">\n"
+					"</head>\n"
+					"<body>\n";
+		}
+
+		virtual void write( char c )
+		{
+			file.put(c);
+		}
+
+		std::fstream file;
 	};
 };
 

@@ -29,17 +29,16 @@
 #define __CONSOLE_LOG_H__
 
 #include "LogBase.hpp"
-#include <iostream>
+#include <cstdio>
 
 namespace rhythm
 {
-	template <std::ostream & os = std::cout >
 	class ConsoleLog : public LogBase
 	{
 	private:
 		virtual void write( char c )
 		{
-			os << c;
+			putc( c, stdout );
 		}
 	};
 };

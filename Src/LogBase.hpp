@@ -33,6 +33,7 @@
 #include <iostream>
 #include "LexicalCast.h"
 #include "Uncopyable.h"
+#include "StdLevels.hpp"
 
 namespace rhythm
 {
@@ -74,15 +75,19 @@ namespace rhythm
 			:	radix(Log::dec)
 		{}
 		
-		virtual ~LogBase(){}
+		virtual ~LogBase()
+		{}
 
- 		LogBase& operator<< ( const Log::Radix r )
+		virtual void preCond()
+		{}
+
+ 		virtual LogBase& operator<< ( const Log::Radix r )
 		{ 
 			radix = r;
 			return *this; 
 		}
 
- 		LogBase& operator<< ( const Log::Manip m )
+ 		virtual LogBase& operator<< ( const Log::Manip m )
 		{ 
 			write( static_cast<char>(m) );
 			return *this; 
@@ -90,101 +95,101 @@ namespace rhythm
 
 		// Characters
 
- 		LogBase& operator<< ( char c )
+ 		virtual LogBase& operator<< ( char c )
 		{ 
 			write( c );
 			return *this; 
 		}
 
- 		LogBase& operator<< ( unsigned char c )
+ 		virtual LogBase& operator<< ( unsigned char c )
 		{ 
 			write( static_cast<char>(c) );
 			return *this; 
 		}
 
- 		LogBase& operator<< ( signed char c )
+ 		virtual LogBase& operator<< ( signed char c )
 		{ 
 			write( static_cast<char>(c) );
 			return *this; 
 		}
 
- 		LogBase& operator<< ( char *str )
+ 		virtual LogBase& operator<< ( char *str )
 		{ 
 			while( *str )
 				write( *str++ );
 			return *this; 
 		}
 
-		LogBase& operator<< ( const char * str )
+		virtual LogBase& operator<< ( const char * str )
 		{ 
 			while( *str )
 				write( *str++ );
 			return *this; 
 		}
 
- 		LogBase& operator<< ( unsigned char * str )
+ 		virtual LogBase& operator<< ( unsigned char * str )
 		{ 
 			return operator<<( reinterpret_cast<char*>(str) );
 		}
 
- 		LogBase& operator<< ( signed char * str )
+ 		virtual LogBase& operator<< ( signed char * str )
 		{ 
 			return operator<<( reinterpret_cast<char*>(str) );
 		}
 
-		LogBase& operator<< ( const unsigned char * str )
+		virtual LogBase& operator<< ( const unsigned char * str )
 		{ 
 			return operator<<( reinterpret_cast<const char*>(str) );
 		}
 
-		LogBase& operator<< ( const signed char * str )
+		virtual LogBase& operator<< ( const signed char * str )
 		{ 
 			return operator<<( reinterpret_cast<const char*>(str) );
 		}
 
-		LogBase& operator<< ( const std::string &str )
+		virtual LogBase& operator<< ( const std::string &str )
 		{
 			return operator<<( str.c_str() );
 		}
 
 		// Numerics
- 		LogBase& operator<< ( short val )
+ 		virtual LogBase& operator<< ( short val )
 		{ 
 			return operator<<( static_cast<long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( unsigned short val )
+ 		virtual LogBase& operator<< ( unsigned short val )
 		{ 
 			return operator<<( static_cast<unsigned long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( int val )
+ 		virtual LogBase& operator<< ( int val )
 		{ 
 			return operator<<( static_cast<long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( unsigned val )
+ 		virtual LogBase& operator<< ( unsigned val )
 		{ 
 			return operator<<( static_cast<unsigned long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( long val )
+ 		virtual LogBase& operator<< ( long val )
 		{ 
 			return operator<<( static_cast<long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( unsigned long val )
+ 		virtual LogBase& operator<< ( unsigned long val )
 		{ 
 			return operator<<( static_cast<unsigned long long>(val) ); 
 		}
 
-		LogBase& operator<< ( long long val )
+		virtual LogBase& operator<< ( long long val )
 		{
 			val = (val < 0 && radix == 10 ) ? write('-'), -val : val;
 			return operator<<( static_cast<unsigned long long>(val) ); 
 		}
 
- 		LogBase& operator<< ( unsigned long long val )
+ 		virtual LogBase& operator<< ( unsigned long long val )
 		{ 
 			static const char *lookUp = "0123456789ABCDEF";
 
@@ -214,7 +219,7 @@ namespace rhythm
 			return *this; 
 		}
 
-		LogBase& operator<< ( const void* ptr )
+		virtual LogBase& operator<< ( const void* ptr )
 		{
 			Log::Radix prev = radix;
 			radix = Log::hex;
@@ -223,22 +228,22 @@ namespace rhythm
 			return *this;
 		}
 
-		LogBase& operator<< ( bool val )
+		virtual LogBase& operator<< ( bool val )
 		{ 
-			return operator<<( val == 0 ? "false" : "true" );
+			return operator<<( val == 0 ? "False" : "True" );
 		}
 
-		LogBase& operator<< ( float val )
-		{ 
-			return operator<<( static_cast< long double>(val) );
-		}
-
-		LogBase& operator<< ( double val )
+		virtual LogBase& operator<< ( float val )
 		{ 
 			return operator<<( static_cast< long double>(val) );
 		}
 
- 		LogBase& operator<< ( long double val )
+		virtual LogBase& operator<< ( double val )
+		{ 
+			return operator<<( static_cast< long double>(val) );
+		}
+
+ 		virtual LogBase& operator<< ( long double val )
 		{ 
 			try
 			{
@@ -250,13 +255,15 @@ namespace rhythm
 			}
 		}
 
-		LogBase& operator<< ( const std::function<const char*()> &stringtor )
+		//Override functor/lambda in order to know what warnign is being printed..
+		virtual LogBase& operator<< ( Log::Level &l )
 		{
-			return operator<<( stringtor() );
+			std::cout << "HELLLLLO\n";
+			return operator<<( l() );
 		}
 
 	private:
-		virtual void write( char c ){};
+		virtual void write( char c ) = 0;
 
 	private:
 		Log::Radix radix;

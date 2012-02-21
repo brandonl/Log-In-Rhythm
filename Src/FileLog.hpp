@@ -36,9 +36,9 @@ namespace rhythm
 	class FileLog : public LogBase
 	{
 	public:
-		FileLog() : LogBase()
+		explicit FileLog( const char * fp = "./Log/RhythmLog.txt" ) : LogBase()
 		{
-			buff.open( "RhythmLog.txt", std::ios::out | std::ios::app );
+			buff.open( fp, std::ios::out | std::ios::app );
 		}
 
 		~FileLog()
@@ -47,15 +47,7 @@ namespace rhythm
 		}
 
 	protected:
-		virtual LogBase& operator<< (std::ostream& ( *pf )(std::ostream&))
-		{
-			return *this;
-		}
-
-		virtual LogBase& operator<< (std::ios_base& ( *pf )(std::ios_base&))
-		{
-			return *this;
-		}
+		std::filebuf buff;
 
 	private:
 		virtual void write( char c )
@@ -63,8 +55,6 @@ namespace rhythm
 			buff.sputc(c);
 			buff.pubsync();
 		}
-
-		std::filebuf buff;
 	};
 };
 

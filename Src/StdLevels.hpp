@@ -30,7 +30,7 @@ namespace rhythm
 		{
 			virtual const char* operator()()
 			{
-				return "[ Error ] ";
+				return "[ ERROR ] ";
 			}
 		};
 	};

@@ -68,6 +68,7 @@ namespace rhythm
 
 		inline LogBase& write()
 		{
+			Logger::printPreCondition();
 			return Logger::activeStream();
 		}
 

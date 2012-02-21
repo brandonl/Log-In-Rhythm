@@ -1,0 +1,33 @@
+body
+{		
+	font-family: "Courier", "Times New Roman", Sans-serif;		
+	text-align: center;	
+}	
+
+error	
+{		
+	color: #dd4c39;	
+}	
+
+report	
+{		
+	color: #498cf7;	
+}	
+
+time
+{		
+	font-size:10px;		
+	color: #666666;	
+}	
+
+div.entry	
+{		
+	text-align: left;		
+	width: 800px;		
+	border-width: 1px;		
+	border-color: #CCC;		
+	border-style: solid;		
+	margin: 8px auto;		
+	padding: 6px;		
+	border-radius: 8px;	
+}

@@ -51,16 +51,13 @@ int main()
 	// Notice this line does nothing since the log was default inited with a 
 	// console and that default Log is created as a singleton
 	// THus the address below is the same as above.
-	Logger::setStream<ConsoleLog<>>();
+	Logger::setStream<ConsoleLog>();
 	rlog << &Logger::activeStream() << Log::nl;
 
 	std::string s = "String: I am it\n";
 	rlog << s.c_str();
 	rlog << bool(1) << " <TRUE FALSE> " << bool(0) << Log::nl;
 	rlog << "Hello" << Log::tab << "World" << Log::nl<< Log::nl;
-
-	std::function< const char *() > f = [](){ return "I am a functo....err Lambda."; };
-	rlog << "std::function Lambda: " << f << Log::nl << Log::nl;
 
 	int x = 1;
 	rlog << "Address: "<<  &x << "\nDouble: " << 1.103 << "\nFloat: " << 1.105f << "Long Double: " << 1.1055l << Log::nl<< Log::nl;
@@ -78,15 +75,14 @@ int main()
 	// Test level
 	rlog << Log::nl;
 	rlog << Log::Warn() << "I'm Warning you.\n";
+	// Due to MACRO up top Info has been disabled from logging.
 	rlog << Log::Report() << "I'm Informative.\n";
 
-	// Due to MACRO up top Info has been disabled from logging.
-	//rlog << Log::Report() << "I'm not.\n";
 	// Switch to FileLog whcih was generated as static var so already exists
-	//Logger::setStream<FileLog>();
+	Logger::setStream<WebLog>();
 	//rlog << "FILE ADDR " << &Logger::activeStream() << Log::nl;
 
-	rlog << __FILE__ << " " << __LINE__ << Log::nl;
+	rlog << Log::Warn() << __FILE__ << " " << __LINE__ << Log::nl;
 
 	char c;
 	std::cin >> c;

@@ -42,6 +42,11 @@ namespace rhythm
 			get().base = &singleton<T>::instance();
 		}
 
+		static void printPreCondition()
+		{
+			get().base->preCond();
+		}
+
 		static LogBase& activeStream()
 		{
 			return *get().base;
@@ -55,7 +60,7 @@ namespace rhythm
 		}
 
 	private:
-		Logger() : base( &singleton<ConsoleLog<>>::instance() ){}
+		Logger() : base( &singleton<ConsoleLog>::instance() ){}
 		~Logger(){}
 		Logger( const Logger& );
 		Logger& operator=( const Logger& );
