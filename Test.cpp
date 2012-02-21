@@ -38,8 +38,9 @@ unsigned operator"" w( unsigned fieldWidth )
 */
 
 #include <string>
+#include <iomanip>
 
-DISABLE_LEVEL( Info )
+DISABLE_LEVEL( Report )
 
 int main()
 {
@@ -55,6 +56,7 @@ int main()
 
 	std::string s = "String: I am it\n";
 	rlog << s.c_str();
+	rlog << bool(1) << " <TRUE FALSE> " << bool(0) << Log::nl;
 	rlog << "Hello" << Log::tab << "World" << Log::nl<< Log::nl;
 
 	std::function< const char *() > f = [](){ return "I am a functo....err Lambda."; };
@@ -76,14 +78,15 @@ int main()
 	// Test level
 	rlog << Log::nl;
 	rlog << Log::Warn() << "I'm Warning you.\n";
-	rlog << Log::Info() << "I'm Informative.\n";
+	rlog << Log::Report() << "I'm Informative.\n";
 
 	// Due to MACRO up top Info has been disabled from logging.
-	//rlog << Log::Info() << "I'm not.\n";
-
+	//rlog << Log::Report() << "I'm not.\n";
 	// Switch to FileLog whcih was generated as static var so already exists
 	//Logger::setStream<FileLog>();
 	//rlog << "FILE ADDR " << &Logger::activeStream() << Log::nl;
+
+	rlog << __FILE__ << " " << __LINE__ << Log::nl;
 
 	char c;
 	std::cin >> c;

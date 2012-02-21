@@ -30,6 +30,7 @@
 
 #include <functional>
 #include <string>
+#include <iostream>
 #include "LexicalCast.h"
 #include "Uncopyable.h"
 
@@ -101,6 +102,12 @@ namespace rhythm
 			return *this; 
 		}
 
+ 		LogBase& operator<< ( signed char c )
+		{ 
+			write( static_cast<char>(c) );
+			return *this; 
+		}
+
  		LogBase& operator<< ( char *str )
 		{ 
 			while( *str )
@@ -120,7 +127,17 @@ namespace rhythm
 			return operator<<( reinterpret_cast<char*>(str) );
 		}
 
+ 		LogBase& operator<< ( signed char * str )
+		{ 
+			return operator<<( reinterpret_cast<char*>(str) );
+		}
+
 		LogBase& operator<< ( const unsigned char * str )
+		{ 
+			return operator<<( reinterpret_cast<const char*>(str) );
+		}
+
+		LogBase& operator<< ( const signed char * str )
 		{ 
 			return operator<<( reinterpret_cast<const char*>(str) );
 		}
@@ -197,7 +214,7 @@ namespace rhythm
 			return *this; 
 		}
 
-		LogBase& operator<< ( void* ptr )
+		LogBase& operator<< ( const void* ptr )
 		{
 			Log::Radix prev = radix;
 			radix = Log::hex;
@@ -206,12 +223,17 @@ namespace rhythm
 			return *this;
 		}
 
+		LogBase& operator<< ( bool val )
+		{ 
+			return operator<<( val == 0 ? "false" : "true" );
+		}
+
 		LogBase& operator<< ( float val )
 		{ 
 			return operator<<( static_cast< long double>(val) );
 		}
 
-		 LogBase& operator<< ( double val )
+		LogBase& operator<< ( double val )
 		{ 
 			return operator<<( static_cast< long double>(val) );
 		}
@@ -227,7 +249,7 @@ namespace rhythm
 				return operator<<( e.what() );
 			}
 		}
-		
+
 		LogBase& operator<< ( const std::function<const char*()> &stringtor )
 		{
 			return operator<<( stringtor() );

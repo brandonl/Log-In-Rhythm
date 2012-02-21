@@ -34,6 +34,7 @@ namespace rhythm
 {
 	class WebLog : public LogBase
 	{
+
 	};
 };
 

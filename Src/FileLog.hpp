@@ -45,10 +45,23 @@ namespace rhythm
 		{
 			buff.close();
 		}
+
+	protected:
+		virtual LogBase& operator<< (std::ostream& ( *pf )(std::ostream&))
+		{
+			return *this;
+		}
+
+		virtual LogBase& operator<< (std::ios_base& ( *pf )(std::ios_base&))
+		{
+			return *this;
+		}
+
 	private:
 		virtual void write( char c )
 		{
 			buff.sputc(c);
+			buff.pubsync();
 		}
 
 		std::filebuf buff;

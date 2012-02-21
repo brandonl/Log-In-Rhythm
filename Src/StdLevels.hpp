@@ -18,11 +18,11 @@ namespace rhythm
 			}
 		};
 
-		struct Info : public Level
+		struct Report : public Level
 		{
 			virtual const char* operator()()
 			{
-				return "[ INFO ] ";
+				return "[ REPORT ] ";
 			}
 		};
 
