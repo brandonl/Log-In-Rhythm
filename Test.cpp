@@ -40,7 +40,7 @@ unsigned operator"" w( unsigned fieldWidth )
 #include <string>
 #include <iomanip>
 
-DISABLE_LEVEL( Report )
+//DISABLE_LEVEL( Report )
 
 int main()
 {
@@ -82,9 +82,15 @@ int main()
 	Logger::setStream<WebLog>();
 	//rlog << "FILE ADDR " << &Logger::activeStream() << Log::nl;
 
-	rlog << Log::Warn() << __FILE__ << " " << __LINE__ << Log::nl;
-	rlog << Log::Error() << "gjriegjt" << Log::nl;
-	rlog << "jgreijgier" << Log::nl;
+	///rlog << Log::Warn() << __FILE__ << " " << __LINE__ << Log::nl;
+	//rlog << Log::Error() << "gjriegjt" << Log::nl;
+	rlog << Log::Report() << "Shader::compile: Compiling vertex shader." << Log::nl;
+	rlog << Log::Report() <<  "Shader::compile: Compiling fragment shader." << Log::nl;
+	rlog << Log::Warn() << "Shader::compile: Failed to compile geometry shader: ADSPhontTextured.gs" << Log::nl;
+	rlog << Log::Report() <<  "Shader::link: Linking program: ADSPhongTextured.glsl" << Log::nl;
+	rlog << Log::Report() <<  "Uniforms to map: ambCol, colMap, diffCol, lightPos, mv, mvp, specCol, surfaceNorm" << Log::nl;
+	rlog << Log::Report() <<  "Texture::load: Texture loaded @ ../../content/Textures/Grass.tga" << Log::nl;
+
 	char c;
 	std::cin >> c;
 

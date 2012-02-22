@@ -51,7 +51,9 @@ namespace rhythm
 
 		void preCond()
 		{
-			file << "<div class=\"entry\">\n";
+			buff.clear();
+			pbuff.clear();
+			buff.append( "<div class=\"entry\">\n" );
 		}
 
 		//Override inorder to end entry.
@@ -59,8 +61,7 @@ namespace rhythm
  		LogBase& operator<< ( const Log::Manip m )
 		{ 
 			write( static_cast<char>(m) );
-			file << "<p class=\"info\">" << buff;
-			buff.clear();
+			file << buff << "<p class=\"info\">" << pbuff;
 			file << "</p></div>\n<div class=\"divider\"></div>\n";
 			file.flush();
 			return *this; 
@@ -81,8 +82,10 @@ namespace rhythm
 				bhtml = "<h1 class=\"error\">";
 				ehtml = "</h1>\n";
 			}
+			else
+				return *this;
 
-			file << bhtml << l() << ehtml;
+			buff.append( bhtml + l() + ehtml );
 			return *this;
 		}
 
@@ -100,11 +103,11 @@ namespace rhythm
 
 		virtual void write( char c )
 		{
-			buff.push_back(c);
+			pbuff.push_back(c);
 			//file.put(c);
 		}
 
-		std::string buff;
+		std::string buff, pbuff;
 		std::fstream file;
 	};
 };
