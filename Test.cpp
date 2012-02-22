@@ -83,7 +83,8 @@ int main()
 	//rlog << "FILE ADDR " << &Logger::activeStream() << Log::nl;
 
 	rlog << Log::Warn() << __FILE__ << " " << __LINE__ << Log::nl;
-
+	rlog << Log::Error() << "gjriegjt" << Log::nl;
+	rlog << "jgreijgier" << Log::nl;
 	char c;
 	std::cin >> c;
 

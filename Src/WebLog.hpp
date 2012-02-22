@@ -51,7 +51,7 @@ namespace rhythm
 
 		void preCond()
 		{
-			LogBase::operator<<( "<div class=\"entry\">\n");
+			file << "<div class=\"entry\">\n";
 		}
 
 		//Override inorder to end entry.
@@ -59,7 +59,9 @@ namespace rhythm
  		LogBase& operator<< ( const Log::Manip m )
 		{ 
 			write( static_cast<char>(m) );
-			LogBase::operator<<( "</div>\n" );
+			file << "<p class=\"info\">" << buff;
+			buff.clear();
+			file << "</p></div>\n<div class=\"divider\"></div>\n";
 			file.flush();
 			return *this; 
 		}
@@ -80,7 +82,8 @@ namespace rhythm
 				ehtml = "</h1>\n";
 			}
 
-			return LogBase::operator<<( bhtml + l() + ehtml );
+			file << bhtml << l() << ehtml;
+			return *this;
 		}
 
 	private: 
@@ -97,9 +100,11 @@ namespace rhythm
 
 		virtual void write( char c )
 		{
-			file.put(c);
+			buff.push_back(c);
+			//file.put(c);
 		}
 
+		std::string buff;
 		std::fstream file;
 	};
 };
