@@ -6,7 +6,7 @@ Similar to usage of iostreams.
 
 Basic usage:
 
-'''
+```
 #include "Rhythm.hpp"
 
 ...
@@ -14,10 +14,10 @@ using namespace rhythm;
 
 rlog << Log::Warn() << "Shader::Load: Failed to open geometry shader; file: " << fp << Log::nl;
 ...
-'''
+```
 
 You can create your own warning levels with the following:
-'''
+```
 #include "StdLevels.hpp"
 
 namespace Log
@@ -34,7 +34,7 @@ class MyLevel : public Level
 };
 ...
 rlog << Log::MyLevel() << "Message" << Log::nl;
-'''
+```
 
 By using Rhythm you can easily turn off all reporting by simply switching to release profile in VC or
 defining NDEBUG.
@@ -42,10 +42,9 @@ defining NDEBUG.
 Doing so will remove any trace of rhythm and have 0 run time impact.
 
 Along the same lines you can selectively disable certain warning levels through the macro provided in "Rhythm.hpp" header.
-
-'''
+```
 DISABLE_LEVEL( Warn )
-'''
+```
 
 Will remove and messages with the level Warn specified.
 
