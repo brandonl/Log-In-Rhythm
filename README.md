@@ -17,6 +17,7 @@ rlog << Log::Warn() << "Shader::Load: Failed to open geometry shader; file: " <<
 ```
 
 You can create your own warning levels with the following:
+
 ```
 #include "StdLevels.hpp"
 
@@ -42,6 +43,7 @@ defining NDEBUG.
 Doing so will remove any trace of rhythm and have 0 run time impact.
 
 Along the same lines you can selectively disable certain warning levels through the macro provided in "Rhythm.hpp" header.
+
 ```
 DISABLE_LEVEL( Warn )
 ```
